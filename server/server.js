@@ -3,6 +3,8 @@ const cookieparser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
 const connectdb = require("./config/db");
+const authroutes = require("./Routes/Auth.route.js");
+const errorhandler = require("./Middlewares/errorhandler.middleware");
 
 const app = express();
 
@@ -12,7 +14,11 @@ app.use(cors());
 
 connectdb();
 
-const PORT = process.env.PORT || 5000;
+app.use("/api/auth", authroutes);
+
+app.use(errorhandler);
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Server Running on Port: ${PORT}`);
