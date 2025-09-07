@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = process.env.JWT_SECRET;
 const {
-  generateandsetjwt,
+  generateandsettoken,
   generateaccesstoken,
   verifyjwt,
 } = require("../Utils/jwt.utility");
@@ -54,7 +54,7 @@ const login = async (req, res, next) => {
     if (!matchpassword) {
       return res.status(401).json({ message: "Invalid Credentials" });
     }
-    const accesstoken = generateandsetjwt(res, findemail._id);
+    const accesstoken = generateandsettoken(res, findemail._id);
     const { Password: _, ...userData } = findemail.toObject();
     return res.status(200).json({
       message: "Login successful",
