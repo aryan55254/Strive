@@ -5,7 +5,7 @@ const SECRET_KEY = process.env.JWT_SECRET;
 const {
   generateandsettoken,
   generateaccesstoken,
-  verifyjwt,
+  cleartoken,
 } = require("../Utils/jwt.utility");
 //register controller
 
@@ -82,7 +82,7 @@ const refresh = async (req, res, next) => {
       if (!user) {
         return res.status(403).json({ message: "Forbidden: User not found" });
       }
-      const newAccessToken = await generateaccesstoken(user._id);
+      const newAccessToken = generateaccesstoken(user._id);
       return res.status(200).json({ accessToken: newAccessToken });
     });
   } catch (err) {
@@ -90,4 +90,17 @@ const refresh = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, refresh };
+//logout controller
+
+const logout = async (req, res, next) => {
+  try {
+    cleartoken(res);
+    return res
+      .status(200)
+      .json({ message: "Succesfully Logged Out Of the session " });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, refresh, logout };

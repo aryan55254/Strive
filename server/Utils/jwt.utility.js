@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const SecretKey = process.env.JWT_SECRET;
 
-const generateandsettoken = async (res, userid) => {
+const generateandsettoken = (res, userid) => {
   const accesstoken = jwt.sign({ userid }, SecretKey, { expiresIn: "15m" });
   const refreshtoken = jwt.sign({ userid }, SecretKey, { expiresIn: "7d" });
   const isProduction = process.env.NODE_ENV === "production";
@@ -15,9 +15,20 @@ const generateandsettoken = async (res, userid) => {
   return accesstoken;
 };
 
-const generateaccesstoken = async (userid) => {
+const generateaccesstoken = (userid) => {
   const accesstoken = jwt.sign({ userid }, SecretKey, { expiresIn: "15m" });
   return accesstoken;
 };
 
-module.exports = { generateandsettoken, generateaccesstoken };
+const cleartoken = (res) => {
+  const isProduction = process.env.NODE_ENV === "production";
+  res.cookie("jwt", "", {
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    httpOnly: true,
+    maxAge: new Date(0),
+    path: "/",
+  });
+};
+
+module.exports = { generateandsettoken, generateaccesstoken, cleartoken };
