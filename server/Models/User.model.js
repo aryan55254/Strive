@@ -14,6 +14,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  generationCount: {
+    type: Number,
+    default: 0,
+  },
+  lastGenerationDate: {
+    type: Date,
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

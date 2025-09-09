@@ -28,9 +28,12 @@ const authmiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    return res
-      .status(403)
-      .json({ message: "Forbidden: Invalid or expired token" });
+    if (err.name === "JsonWebTokenError" || err.name === "TokenExpiredError") {
+      return res
+        .status(403)
+        .json({ message: "Forbidden: Invalid or expired token" });
+    }
+    next(err);
   }
 };
 

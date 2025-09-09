@@ -105,10 +105,12 @@ const logout = async (req, res, next) => {
 
 //getuser controller
 
-const getuser = async (req, res) => {
+const getuser = async (req, res, next) => {
   try {
     const userid = req.user._id;
-    const UserData = await User.findById(userid).select("-Password");
+    const UserData = await User.findById(userid).select(
+      "-Password -lastGenerationDate"
+    );
     if (!UserData) {
       return res.status(404).json({ message: "user not found" });
     }
