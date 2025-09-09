@@ -103,4 +103,19 @@ const logout = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, refresh, logout };
+//getuser controller
+
+const getuser = async (req, res) => {
+  try {
+    const userid = req.user._id;
+    const UserData = await User.findById(userid).select("-Password");
+    if (!UserData) {
+      return res.status(404).json({ message: "user not found" });
+    }
+    return res.status(200).json(UserData);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, refresh, logout, getuser };
