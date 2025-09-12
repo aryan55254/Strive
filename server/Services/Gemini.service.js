@@ -3,7 +3,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 async function generateDietPlanFromAI(formData) {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash-lite-latest",
+      model: "gemini-1.5-flash-latest",
       generationConfig: {
         responseMimeType: "application/json",
       },
@@ -49,7 +49,7 @@ async function generateDietPlanFromAI(formData) {
 async function generateWorkoutPlanFromAI(formData) {
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash-lite-latest",
+      model: "gemini-1.5-flash-latest",
       generationConfig: {
         responseMimeType: "application/json",
       },
