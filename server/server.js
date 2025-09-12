@@ -6,6 +6,7 @@ const connectdb = require("./config/db");
 const authroutes = require("./Routes/Auth.route.js");
 const errorhandler = require("./Middlewares/errorhandler.middleware");
 const generationrouter = require("./Routes/Generation.route.js");
+const planrouter = require("./Routes/Plan.route.js");
 
 const app = express();
 
@@ -17,6 +18,7 @@ connectdb();
 
 app.use("/api/auth", authroutes);
 app.use("/api/generate", generationrouter);
+app.use("/api/plans", planrouter);
 
 app.use(errorhandler);
 

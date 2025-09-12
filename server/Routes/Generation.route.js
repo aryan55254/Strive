@@ -13,14 +13,14 @@ const {
 const generationrouter = express.Router();
 //route for generating workouts from user input form
 generationrouter.post(
-  "/generate/workout",
+  "/workout",
   authmiddleware,
   zodvalidator(workoutPlanSchema),
   generateworkout
 );
 //route for generating diets from user input form
 generationrouter.post(
-  "/generate/diet",
+  "/diet",
   authmiddleware,
   zodvalidator(dietPlanSchema),
   generatediet
