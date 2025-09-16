@@ -74,13 +74,6 @@ function Landing() {
                 >
                   FAQs
                 </a>
-
-                <a
-                  href="#testimoanials"
-                  className="text-white text-xl hover:text-cyan-400 transition-colors duration-200"
-                >
-                  Testimonials
-                </a>
               </div>
             </div>
 
