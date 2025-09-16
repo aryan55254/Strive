@@ -12,7 +12,12 @@ const app = express();
 
 app.use(cookieparser());
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://strive-chi.vercel.app/",
+    credentials: true,
+  })
+);
 
 connectdb();
 

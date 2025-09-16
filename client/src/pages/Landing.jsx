@@ -150,7 +150,7 @@ function Landing() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gray-800 p-8 rounded-xl hover:bg-gray-700 transition-colors duration-300">
+            <div className="bg-gray-800 p-8 rounded-xl border border-cyan-400 hover:bg-gray-700 transition-colors duration-300">
               <BoltIcon className="text-cyan-400 h-12 w-12 mb-6" />
               <h2 className="text-2xl font-bold text-white mb-4">
                 Intelligent Plan Generation
@@ -161,7 +161,7 @@ function Landing() {
                 your fitness DNA.
               </p>
             </div>
-            <div className="bg-gray-800 p-8 rounded-xl hover:bg-gray-700 transition-colors duration-300">
+            <div className="bg-gray-800 p-8 rounded-xl border border-cyan-400 hover:bg-gray-700 transition-colors duration-300">
               <ArrowTrendingUpIcon className="text-cyan-400 h-12 w-12 mb-6" />
               <h2 className="text-2xl font-bold text-white mb-4">
                 Adaptive Progression
@@ -171,7 +171,7 @@ function Landing() {
                 journey progressing with AI-driven adjustments.
               </p>
             </div>
-            <div className="bg-gray-800 p-8 rounded-xl hover:bg-gray-700 transition-colors duration-300">
+            <div className="bg-gray-800 p-8 rounded-xl border border-cyan-400 hover:bg-gray-700 transition-colors duration-300">
               <BookOpenIcon className="text-cyan-400 h-12 w-12 mb-6" />
               <h2 className="text-2xl font-bold text-white mb-4">
                 Master Your Movement
@@ -200,7 +200,7 @@ function Landing() {
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-800 p-8 rounded-xl hover:bg-gray-700 transition-colors duration-300">
+            <div className="bg-gray-800 p-8 rounded-xl border border-cyan-400 hover:bg-gray-700 transition-colors duration-300">
               <h2 className="text-2xl font-bold text-white mb-4">
                 Workout Plans
               </h2>
@@ -219,7 +219,7 @@ function Landing() {
                 </li>
               </ul>
             </div>
-            <div className="bg-gray-800 p-8 rounded-xl hover:bg-gray-700 transition-colors duration-300">
+            <div className="bg-gray-800 p-8 rounded-xl border border-cyan-400 hover:bg-gray-700 transition-colors duration-300">
               <h2 className="text-2xl font-bold text-white mb-4">Diet Plans</h2>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-400">
