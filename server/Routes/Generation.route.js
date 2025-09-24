@@ -1,5 +1,6 @@
 const express = require("express");
 const authmiddleware = require("../Middlewares/verifyJWT.middleware");
+const rateLimiter = require("../Middlewares/rateLimiter.middleware");
 const {
   dietPlanSchema,
   workoutPlanSchema,
@@ -15,6 +16,7 @@ const generationrouter = express.Router();
 generationrouter.post(
   "/workout",
   authmiddleware,
+  rateLimiter,
   zodvalidator(workoutPlanSchema),
   generateworkout
 );
@@ -22,6 +24,7 @@ generationrouter.post(
 generationrouter.post(
   "/diet",
   authmiddleware,
+  rateLimiter,
   zodvalidator(dietPlanSchema),
   generatediet
 );
