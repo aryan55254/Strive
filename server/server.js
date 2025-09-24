@@ -14,7 +14,7 @@ app.use(cookieparser());
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://strive-chi.vercel.app/",
+    origin: "https://strive-chi.vercel.app",
     credentials: true,
   })
 );
