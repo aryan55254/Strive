@@ -5,7 +5,7 @@ import {
   createContext,
   useNavigate,
 } from "react";
-import apiservice from "../services/api.service";
+import { apiservice, setupInterceptors } from "../services/api.service";
 
 const authcontext = createContext(null);
 
@@ -18,6 +18,17 @@ export const authprovider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setupInterceptors({
+      accessToken,
+      setAccessToken,
+      logout: () => {
+        setuser(null);
+        setAccessToken(null);
+        setIsAuthenticated(false);
+        navigate("/login");
+      },
+    });
+
     const checkUserStatus = async () => {
       try {
         const response = await apiservice.post("/auth/refresh");
@@ -64,8 +75,6 @@ export const authprovider = ({ children }) => {
         error.response?.data?.message || error.message
       );
       throw error;
-    } finally {
-      setloading(false);
     }
   };
 
@@ -83,8 +92,6 @@ export const authprovider = ({ children }) => {
         error.response?.data?.message || error.message
       );
       throw error;
-    } finally {
-      setloading(false);
     }
   };
 
@@ -98,7 +105,6 @@ export const authprovider = ({ children }) => {
       );
       throw error;
     } finally {
-      setloading(false);
       setuser(null);
       setAccessToken(null);
       setIsAuthenticated(false);
