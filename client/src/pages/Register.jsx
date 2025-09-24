@@ -38,10 +38,10 @@ export default function Register() {
       <div className="relative z-10 bg-gray-800/80 backdrop-blur-sm border border-cyan-500/40 p-8 rounded-lg shadow-2xl w-full max-w-md">
         <div className="flex justify-center items-center mb-4 space-x-3">
           <SparklesIcon className="h-10 w-10 text-cyan-400" />
-          <span className="text-3xl font-bold text-white">Strive</span>
+          <span className="text-3xl font-bold text-cyan-400">Strive</span>
         </div>
 
-        <h2 className="text-2xl font-semibold text-white text-center mb-6">
+        <h2 className="text-2xl font-semibold text-cyan-400 text-center mb-6">
           Create Your Account
         </h2>
         <form onSubmit={handleSubmit}>
