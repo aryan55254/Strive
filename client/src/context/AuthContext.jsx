@@ -26,11 +26,11 @@ export const AuthProvider = ({ children }) => {
 
     const checkUserStatus = async () => {
       try {
-        const response = await apiservice.post("/auth/refresh");
+        const response = await apiservice.post("/api/auth/refresh");
         const newAccessToken = response.data.accessToken;
         setAccessToken(newAccessToken);
         setIsAuthenticated(true);
-        const userResponse = await apiservice.get("/auth/getuser", {
+        const userResponse = await apiservice.get("/api/auth/getuser", {
           headers: { Authorization: `Bearer ${newAccessToken}` },
         });
         setuser(userResponse.data);
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await apiservice.post("/auth/login", {
+      const response = await apiservice.post("/api/auth/login", {
         Email: email,
         Password: password,
       });
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (email, password, username) => {
     try {
-      const response = await apiservice.post("/auth/register", {
+      const response = await apiservice.post("/api/auth/register", {
         Email: email,
         Password: password,
         Username: username,
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await apiservice.post("/auth/logout");
+      const response = await apiservice.post("/api/auth/logout");
     } catch (error) {
       console.error(
         "logout failed:",

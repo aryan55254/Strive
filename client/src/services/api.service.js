@@ -28,7 +28,7 @@ export const setupInterceptors = (authContext) => {
         originalRequest._retry = true;
 
         try {
-          const { data } = await apiservice.post("/auth/refresh");
+          const { data } = await apiservice.post("/api/auth/refresh");
           authContext.setAccessToken(data.accessToken);
           originalRequest.headers[
             "Authorization"
