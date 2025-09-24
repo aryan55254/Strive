@@ -16,12 +16,10 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 204,
 };
-app.options("/*", cors(corsOptions));
 
 app.use(cors(corsOptions));
 app.use(cookieparser());
 app.use(express.json());
-
 
 connectdb();
 
