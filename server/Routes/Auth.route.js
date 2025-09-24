@@ -18,3 +18,4 @@ authrouter.post("/logout", logout);
 authrouter.get("/getuser", authmiddleware, getuser);
 
 module.exports = authrouter;
+// Final version.
