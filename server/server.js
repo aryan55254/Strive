@@ -11,7 +11,7 @@ const planrouter = require("./Routes/Plan.route.js");
 const app = express();
 
 const corsOptions = {
-  origin: "https://strive-cl.vercel.app",
+  origin: "https://strive-chi.vercel.app",
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 204,
