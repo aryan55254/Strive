@@ -10,14 +10,17 @@ const planrouter = require("./Routes/Plan.route.js");
 
 const app = express();
 
+const corsOptions = {
+  origin: "https://strive-cl.vercel.app",
+  credentials: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  optionsSuccessStatus: 204,
+};
+app.options("*", cors(corsOptions));
+
 app.use(cookieparser());
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://strive-chi.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 
 connectdb();
 
