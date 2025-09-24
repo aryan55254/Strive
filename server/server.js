@@ -16,7 +16,7 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 204,
 };
-app.options("/*", cors(corsOptions));
+app.options("*/", cors(corsOptions));
 
 app.use(cors(corsOptions));
 app.use(cookieparser());
