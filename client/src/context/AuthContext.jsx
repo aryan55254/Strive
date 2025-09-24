@@ -1,15 +1,10 @@
-import {
-  useState,
-  useEffect,
-  useContext,
-  createContext,
-  useNavigate,
-} from "react";
-import { apiservice, setupInterceptors } from "../services/api.service";
+import { useState, useEffect, useContext, createContext } from "react";
+import { useNavigate } from "react-router-dom";
+import apiservice, { setupInterceptors } from "../services/api.service";
 
-const authcontext = createContext(null);
+const AuthContext = createContext(null);
 
-export const authprovider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [isloading, setloading] = useState(true);
   const [user, setuser] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
@@ -123,14 +118,14 @@ export const authprovider = ({ children }) => {
   };
 
   return (
-    <authcontext.Provider value={value}>
+    <AuthContext.Provider value={value}>
       {!isloading && children}
-    </authcontext.Provider>
+    </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => {
-  const context = useContext(authcontext);
+  const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error("useAuth must be used within an AuthProvider");
   }

@@ -7,7 +7,7 @@ const apiservice = axios.create({
   withCredentials: true,
 });
 
-export const setupInterseptors = (authContext) => {
+export const setupInterceptors = (authContext) => {
   //what this next block of code does is it takes the apiservice and before a req is sent it checks if the req has bearer token in it if it doesn't it adds that to it
   apiservice.interceptors.request.use(
     (config) => {
