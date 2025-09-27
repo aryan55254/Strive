@@ -1,4 +1,4 @@
-const Exercise = require("../Models/Exercise.model.js");
+const Exercise = require("../Models/Excercise.model");
 const getAllExercises = async (req, res) => {
   try {
     const exercises = await Exercise.find({});
