@@ -1,9 +1,10 @@
-import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { RingLoader } from "react-spinners";
+
 const ProtectedRoute = ({ children }) => {
-  const { user, isloading } = useContext(AuthContext);
+  const { user, isloading } = useAuth();
+
   if (isloading) {
     return (
       <div className="flex justify-center items-center h-screen w-full bg-gray-900">
