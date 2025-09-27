@@ -4,9 +4,9 @@ const {
   searchExercises,
 } = require("../Controllers/Excercise.controller");
 
-const router = express.Router();
+const excerciserouter = express.Router();
 
-router.get("/", getAllExercises);
-router.get("/search", searchExercises);
+excerciserouter.get("/", getAllExercises);
+excerciserouter.get("/search", searchExercises);
 
-module.exports = router;
+module.exports = excerciserouter;

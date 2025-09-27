@@ -7,7 +7,7 @@ const authroutes = require("./Routes/Auth.route.js");
 const errorhandler = require("./Middlewares/errorhandler.middleware");
 const generationrouter = require("./Routes/Generation.route.js");
 const planrouter = require("./Routes/Plan.route.js");
-const exerciserouter = require("./Routes/Exercise.route.js");
+const exerciserouter = require("./Routes/Excercise.route.js");
 
 const app = express();
 
