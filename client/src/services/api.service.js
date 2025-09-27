@@ -1,4 +1,5 @@
 import axios from "axios";
+import authStore from "./auth.store";
 
 const API = import.meta.env.VITE_BaseAPI;
 
@@ -7,11 +8,11 @@ const apiservice = axios.create({
   withCredentials: true,
 });
 
-export const setupInterceptors = (authContext) => {
+export const setupInterceptors = () => {
   //what this next block of code does is it takes the apiservice and before a req is sent it checks if the req has bearer token in it if it doesn't it adds that to it
   apiservice.interceptors.request.use(
     (config) => {
-      const token = authContext.accessToken;
+      const token = authStore.getToken();
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       }
@@ -29,13 +30,13 @@ export const setupInterceptors = (authContext) => {
 
         try {
           const { data } = await apiservice.post("/api/auth/refresh");
-          authContext.setAccessToken(data.accessToken);
+          authStore.setAccessToken(data.accessToken);
           originalRequest.headers[
             "Authorization"
           ] = `Bearer ${data.accessToken}`;
           return apiservice(originalRequest);
         } catch (refreshError) {
-          authContext.logout();
+          authStore.logout();
           return Promise.reject(refreshError);
         }
       }

@@ -13,16 +13,19 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setupInterceptors({
-      accessToken,
-      setAccessToken,
-      logout: () => {
-        setuser(null);
-        setAccessToken(null);
-        setIsAuthenticated(false);
-        navigate("/login");
-      },
-    });
+    authStore.setTokenInStore(accessToken);
+  }, [accessToken]);
+
+  useEffect(() => {
+    setupInterceptors();
+
+    authStore.setAccessToken = setAccessToken;
+    authStore.logout = () => {
+      setuser(null);
+      setAccessToken(null);
+      setIsAuthenticated(false);
+      navigate("/login");
+    };
 
     const checkUserStatus = async () => {
       try {

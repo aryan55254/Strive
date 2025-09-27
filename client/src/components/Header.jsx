@@ -58,9 +58,9 @@ function Header() {
               aria-label="Toggle profile menu"
             >
               {isProfileOpen ? (
-                <XMarkIcon className="h-10 w-10" />
+                <XMarkIcon className="h-10 w-10 cursor-pointer" />
               ) : (
-                <UserIcon className="h-10 w-10" />
+                <UserIcon className="h-10 w-10 cursor-pointer" />
               )}
             </button>
 
