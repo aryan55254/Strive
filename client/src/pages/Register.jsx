@@ -21,9 +21,13 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    if (formData.password.length < 6) {
+      setPasswordError("Password must be at least 6 characters.");
+      return;
+    }
     setIsSubmitting(true);
     try {
-      await register(formData.username, formData.email, formData.password);
+      await register(formData.email, formData.password, formData.username);
     } catch (err) {
       setError(
         err.response?.data?.message || "Registration failed. Please try again."

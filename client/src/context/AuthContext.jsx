@@ -12,21 +12,23 @@ export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
+  authStore.setAccessToken = setAccessToken;
+  authStore.logout = () => {
+    setuser(null);
+    setAccessToken(null);
+    setIsAuthenticated(false);
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    setupInterceptors();
+  }, []);
+
   useEffect(() => {
     authStore.setTokenInStore(accessToken);
   }, [accessToken]);
 
   useEffect(() => {
-    setupInterceptors();
-
-    authStore.setAccessToken = setAccessToken;
-    authStore.logout = () => {
-      setuser(null);
-      setAccessToken(null);
-      setIsAuthenticated(false);
-      navigate("/login");
-    };
-
     const checkUserStatus = async () => {
       try {
         const response = await apiservice.post("/api/auth/refresh");
@@ -78,17 +80,18 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (email, password, username) => {
     try {
+      const trimmedEmail = email.trim();
+      const trimmedPassword = password.trim();
+      const trimmedUsername = username.trim();
+
       const response = await apiservice.post("/api/auth/register", {
-        Email: email,
-        Password: password,
-        Username: username,
+        Email: trimmedEmail,
+        Password: trimmedPassword,
+        Username: trimmedUsername,
       });
-      await login(email, password);
+      await login(trimmedEmail, trimmedPassword);
     } catch (error) {
-      console.error(
-        "Register failed:",
-        error.response?.data?.message || error.message
-      );
+      console.error("Register failed:", error.response?.data);
       throw error;
     }
   };

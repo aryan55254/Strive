@@ -14,12 +14,16 @@ import Profile from "./Profile";
 const navLinks = [
   {
     to: "/generatediet",
-    text: "Create Diet Plan",
+    text: "Create Unique Diet Plan With AI",
     Icon: ClipboardDocumentListIcon,
   },
-  { to: "/generateworkout", text: "Create Exercise Plan", Icon: HeartIcon },
-  { to: "/saveddiets", text: "Saved Diets", Icon: BookmarkIcon },
-  { to: "/savedworkouts", text: "Saved Workouts", Icon: FolderIcon },
+  {
+    to: "/generateworkout",
+    text: "Create Unique Workout Plan With AI ",
+    Icon: HeartIcon,
+  },
+  { to: "/saveddiets", text: "Check Saved Diets", Icon: BookmarkIcon },
+  { to: "/savedworkouts", text: "Check Saved Workouts", Icon: FolderIcon },
 ];
 
 function Header() {
@@ -83,7 +87,7 @@ function Header() {
                 `flex items-center rounded-md px-3 py-2 font-medium transition-colors duration-200 ${
                   isActive
                     ? "bg-gray-900 text-cyan-400"
-                    : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                    : "text-gray-300 hover:bg-gray-700 hover:text-cyan-400"
                 }`
               }
               title={text}
