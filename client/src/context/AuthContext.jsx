@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.data) {
-        const { user: userData, accessToken: newAccessToken } = response.data;
+        const { userData, accessToken: newAccessToken } = response.data;
 
         setAccessToken(newAccessToken);
 
