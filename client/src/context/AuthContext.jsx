@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import apiservice, { setupInterceptors } from "../services/api.service";
-
+import authStore from "../services/auth.store.js";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {

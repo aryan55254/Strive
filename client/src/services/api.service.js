@@ -1,5 +1,5 @@
 import axios from "axios";
-import authStore from "./auth.store";
+import authStore from "./auth.store.js";
 
 const API = import.meta.env.VITE_BaseAPI;
 
