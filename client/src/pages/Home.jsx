@@ -2,11 +2,14 @@ import { useState, useEffect, useMemo } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import apiservice from "../services/api.service";
+import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import {
   MagnifyingGlassIcon,
   CubeTransparentIcon,
+  ClipboardDocumentListIcon,
+  HeartIcon,
 } from "@heroicons/react/24/outline";
 const bodyPartFilters = [
   "All",
@@ -88,6 +91,54 @@ function Home() {
       <Header />
       <div className="bg-[#0D1117] min-h-screen text-white">
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="mb-16">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white to-sky-400 pb-2">
+                Create a Plan with AI
+              </h2>
+              <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
+                Let our AI generate personalized diet and workout plans tailored
+                just for you.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Link
+                to="/generatediet"
+                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 group flex items-center gap-4 transition-all duration-300 hover:border-sky-500/50 hover:shadow-lg hover:shadow-sky-900/50"
+              >
+                <ClipboardDocumentListIcon className="h-10 w-10 text-sky-400 flex-shrink-0" />
+                <div>
+                  <h2 className="text-xl font-bold text-white">
+                    AI Diet Planner
+                  </h2>
+                  <p className="text-gray-400 mt-1">
+                    Create a personalized diet plan in seconds.
+                  </p>
+                </div>
+              </Link>
+              <Link
+                to="/generateworkout"
+                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 group flex items-center gap-4 transition-all duration-300 hover:border-sky-500/50 hover:shadow-lg hover:shadow-sky-900/50"
+              >
+                <HeartIcon className="h-10 w-10 text-sky-400 flex-shrink-0" />
+                <div>
+                  <h2 className="text-xl font-bold text-white">
+                    AI Workout Planner
+                  </h2>
+                  <p className="text-gray-400 mt-1">
+                    Generate a custom workout tailored to you.
+                  </p>
+                </div>
+              </Link>
+            </div>
+          </div>
+
+          <div className="relative text-center mb-12">
+            <hr className="border-t border-gray-800" />
+            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0D1117] px-4 text-sm font-medium text-gray-500">
+              OR
+            </span>
+          </div>
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-white to-sky-400 pb-2">
               Explore Exercises
