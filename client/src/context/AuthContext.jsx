@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    authStore.setTokenInStore(accessToken);
+    authStore.setAccessToken(accessToken);
   }, [accessToken]);
 
   useEffect(() => {

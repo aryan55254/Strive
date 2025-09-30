@@ -53,6 +53,7 @@ function Header() {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
+  //we use this to close an opened menu while going to diff page it will automatically close itself
 
   return (
     <header className="sticky top-0 z-40 bg-[#0D1117] backdrop-blur-lg border-b border-gray-900">

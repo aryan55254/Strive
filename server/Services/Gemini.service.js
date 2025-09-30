@@ -85,9 +85,9 @@ async function generateWorkoutPlanFromAI(formData) {
     const responseText = result.response.text();
 
     return JSON.parse(responseText);
-  } catch (error) {
-    console.error("Error generating workout plan from AI:", error);
-    throw new Error("Failed to generate workout plan from AI.");
+  } catch (parseError) {
+    console.error("Failed to parse AI response:", responseText, parseError);
+    throw new Error("AI returned invalid JSON");
   }
 }
 
