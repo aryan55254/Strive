@@ -56,14 +56,19 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // In Home.jsx
   useEffect(() => {
     const fetchAllExercises = async () => {
       try {
         const response = await apiservice.get("/api/exercise");
-        setAllExercises(response.data);
+        // This log will show us the data in both the "good" and "bad" states
+        console.log("API Response for exercises:", response.data);
+
+        // This line will prevent the page from crashing to a blank screen
+        const exercisesData = Array.isArray(response.data) ? response.data : [];
+        setAllExercises(exercisesData);
       } catch (err) {
         setError("Failed to fetch exercises. Please try again later.");
-        console.error(err);
       } finally {
         setIsLoading(false);
       }
