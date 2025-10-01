@@ -12,7 +12,7 @@ const exerciserouter = require("./Routes/Excercise.route.js");
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://strive-chi.vercel.app",
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 204,

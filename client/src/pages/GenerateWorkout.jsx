@@ -116,7 +116,7 @@ const GeneratingSpinner = () => (
     <p className="mt-4 text-lg text-gray-400">
       Our AI is building your custom workout...
     </p>
-    <p className="text-sm text-gray-500">This can take up to 30 seconds.</p>
+    <p className="text-sm text-gray-500">This can take up to a minute.</p>
   </div>
 );
 
@@ -424,7 +424,7 @@ const GeneratedPlanView = ({ planData, handleGoBack }) => {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold py-3 px-4 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
+              className="w-full flex cursor-pointer items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold py-3 px-4 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60"
             >
               {isSaving ? (
                 <ArrowPathIcon className="h-5 w-5 animate-spin" />
@@ -441,7 +441,7 @@ const GeneratedPlanView = ({ planData, handleGoBack }) => {
             <p className="text-lg font-semibold">Plan Saved Successfully!</p>
             <Link
               to="/savedworkouts"
-              className="text-sky-400 hover:underline mt-2 inline-block"
+              className="text-sky-400 cursor-pointer hover:underline mt-2 inline-block"
             >
               View your saved workouts
             </Link>
@@ -452,7 +452,7 @@ const GeneratedPlanView = ({ planData, handleGoBack }) => {
       <div className="mt-8 text-center">
         <button
           onClick={handleGoBack}
-          className="flex items-center justify-center mx-auto gap-2 bg-gray-700 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-600 transition-colors"
+          className="flex cursor-pointer items-center cursor-pointerjustify-center mx-auto gap-2 bg-gray-700 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-600 transition-colors"
         >
           <ArrowUturnLeftIcon className="h-5 w-5" />
           Create a Different Plan
@@ -468,6 +468,7 @@ function GenerateWorkout() {
   const [error, setError] = useState(null);
 
   const handleGenerateWorkout = async (formData) => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setIsLoading(true);
     setError(null);
     try {
@@ -479,18 +480,30 @@ function GenerateWorkout() {
       const response = await apiservice.post("/api/generate/workout", payload);
       setGeneratedPlan(response.data);
     } catch (err) {
-      setError(
-        "An error occurred while generating your plan. Please try again."
-      );
+      if (err.response && err.response.status === 429) {
+        setError({
+          message:
+            "You have reached your daily generation limit. Please try again after 24 hours.",
+          type: "limit",
+        });
+      } else {
+        setError({
+          message:
+            "An unexpected error occurred while generating your diet. Please try again.",
+          type: "general",
+        });
+      }
       console.error("Generation error:", err);
     } finally {
       setIsLoading(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const handleGoBack = () => {
     setGeneratedPlan(null);
     setError(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const renderContent = () => {
@@ -500,7 +513,7 @@ function GenerateWorkout() {
         <div className="text-center py-20 text-red-400 max-w-md mx-auto">
           <ExclamationTriangleIcon className="h-12 w-12 mx-auto mb-4" />
           <h2 className="text-2xl font-bold">Generation Failed</h2>
-          <p className="mt-2">{error}</p>
+          <p className="mt-2">{error.message}</p>
           <button
             onClick={handleGoBack}
             className="mt-6 bg-sky-600 text-white font-bold py-2 px-6 rounded-xl hover:bg-sky-500"

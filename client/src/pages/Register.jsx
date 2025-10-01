@@ -22,7 +22,7 @@ export default function Register() {
     e.preventDefault();
     setError(null);
     if (formData.password.length < 6) {
-      setPasswordError("Password must be at least 6 characters.");
+      setError("Password must be at least 6 characters.");
       return;
     }
     setIsSubmitting(true);
