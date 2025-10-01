@@ -37,7 +37,7 @@ async function generateDietPlanFromAI(formData) {
     `;
 
     const result = await model.generateContent(prompt);
-    const responseText = result.response.text();
+    let responseText = result.response.text();
 
     return JSON.parse(responseText);
   } catch (error) {
@@ -82,7 +82,7 @@ async function generateWorkoutPlanFromAI(formData) {
     `;
 
     const result = await model.generateContent(prompt);
-    const responseText = result.response.text();
+    let responseText = result.response.text();
 
     return JSON.parse(responseText);
   } catch (parseError) {
