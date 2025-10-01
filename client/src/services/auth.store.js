@@ -1,11 +1,11 @@
 let accessToken = null;
 
 const authStore = {
-  getToken: () => accessToken,
+  getAccessToken: () => accessToken, // Renamed for clarity
   setAccessToken: (token) => {
     accessToken = token;
   },
-  clear: () => {
+  logout: () => {
     accessToken = null;
   },
 };

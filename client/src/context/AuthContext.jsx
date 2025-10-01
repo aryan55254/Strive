@@ -7,43 +7,33 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [isloading, setloading] = useState(true);
   const [user, setuser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const navigate = useNavigate();
 
-  authStore.setAccessToken = setAccessToken;
   authStore.logout = () => {
     setuser(null);
-    setAccessToken(null);
     setIsAuthenticated(false);
+    authStore.setAccessToken(null);
     navigate("/login");
   };
 
   useEffect(() => {
     setupInterceptors();
-  }, []);
 
-  useEffect(() => {
-    authStore.setAccessToken(accessToken);
-  }, [accessToken]);
-
-  useEffect(() => {
     const checkUserStatus = async () => {
       try {
         const response = await apiservice.post("/api/auth/refresh");
         const newAccessToken = response.data.accessToken;
-        setAccessToken(newAccessToken);
+
+        authStore.setAccessToken(newAccessToken);
         setIsAuthenticated(true);
-        const userResponse = await apiservice.get("/api/auth/getuser", {
-          headers: { Authorization: `Bearer ${newAccessToken}` },
-        });
+
+        const userResponse = await apiservice.get("/api/auth/getuser");
         setuser(userResponse.data);
       } catch (error) {
         console.log("No active session or refresh token expired.");
-        setuser(null);
-        setAccessToken(null);
-        setIsAuthenticated(false);
+        authStore.logout();
       } finally {
         setloading(false);
       }
@@ -60,10 +50,9 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.data) {
-        const { userData, accesstoken: newAccessToken } = response.data;
+        const { userData, accessToken: newAccessToken } = response.data;
 
-        setAccessToken(newAccessToken);
-
+        authStore.setAccessToken(newAccessToken);
         setuser(userData);
         setIsAuthenticated(true);
 
@@ -98,18 +87,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await apiservice.post("/api/auth/logout");
+      await apiservice.post("/api/auth/logout");
     } catch (error) {
       console.error(
         "logout failed:",
         error.response?.data?.message || error.message
       );
-      throw error;
     } finally {
-      setuser(null);
-      setAccessToken(null);
-      setIsAuthenticated(false);
-      navigate("/login");
+      authStore.logout();
     }
   };
 
@@ -119,7 +104,6 @@ export const AuthProvider = ({ children }) => {
     register,
     isloading,
     user,
-    accessToken,
     isAuthenticated,
   };
 

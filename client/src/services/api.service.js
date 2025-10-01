@@ -16,12 +16,9 @@ const refreshAPI = axios.create({
 export const setupInterceptors = () => {
   apiservice.interceptors.request.use(
     (config) => {
-      const token = authStore.getToken?.() || authStore.accessToken;
+      const token = authStore.getAccessToken();
       if (token) {
-        config.headers = {
-          ...config.headers,
-          Authorization: `Bearer ${token}`,
-        };
+        config.headers["Authorization"] = `Bearer ${token}`;
       }
       return config;
     },
