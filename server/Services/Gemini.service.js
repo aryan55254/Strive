@@ -1,6 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 async function generateDietPlanFromAI(formData) {
+  let responseText;
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash-latest",
@@ -57,6 +58,7 @@ async function generateDietPlanFromAI(formData) {
 }
 
 async function generateWorkoutPlanFromAI(formData) {
+  let responseText;
   try {
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash-latest",
