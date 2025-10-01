@@ -35,14 +35,24 @@ async function generateDietPlanFromAI(formData) {
         "generalGuidance": { "hydration": "string", "medicalNotes": ["string"], "generalTips": ["string"] }
       }
     `;
-
     const result = await model.generateContent(prompt);
-    let responseText = result.response.text();
+    responseText = result.response.text();
 
     return JSON.parse(responseText);
   } catch (error) {
-    console.error("Error generating diet plan from AI:", error);
-    throw new Error("Failed to generate diet plan from AI.");
+    console.error(
+      "Failed to process AI response. Raw text:",
+      responseText,
+      "Error:",
+      error
+    );
+    if (responseText === undefined) {
+      throw new Error("Failed to get a response from the AI service.");
+    } else {
+      throw new Error(
+        "The AI returned invalid JSON. Check the server logs for the raw text."
+      );
+    }
   }
 }
 
@@ -82,12 +92,23 @@ async function generateWorkoutPlanFromAI(formData) {
     `;
 
     const result = await model.generateContent(prompt);
-    let responseText = result.response.text();
+    responseText = result.response.text();
 
     return JSON.parse(responseText);
-  } catch (parseError) {
-    console.error("Failed to parse AI response:", responseText, parseError);
-    throw new Error("AI returned invalid JSON");
+  } catch (error) {
+    console.error(
+      "Failed to process AI response. Raw text:",
+      responseText,
+      "Error:",
+      error
+    );
+    if (responseText === undefined) {
+      throw new Error("Failed to get a response from the AI service.");
+    } else {
+      throw new Error(
+        "The AI returned invalid JSON. Check the server logs for the raw text."
+      );
+    }
   }
 }
 
