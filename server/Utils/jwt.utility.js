@@ -11,6 +11,7 @@ const generateandsettoken = (res, userid) => {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: "/",
+    domain: isProduction ? ".aryanmishra.site" : undefined,
   });
   return accesstoken;
 };
@@ -26,8 +27,9 @@ const cleartoken = (res) => {
     secure: isProduction,
     sameSite: isProduction ? "none" : "lax",
     httpOnly: true,
-    maxAge: new Date(0),
+    expires: new Date(0),
     path: "/",
+    domain: isProduction ? ".aryanmishra.site" : undefined,
   });
 };
 
