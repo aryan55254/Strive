@@ -2,48 +2,36 @@ import { useState, useEffect, useContext, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import apiservice, { setupInterceptors } from "../services/api.service";
 import authStore from "../services/auth.store.js";
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isloading, setloading] = useState(true);
   const [user, setuser] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const navigate = useNavigate();
 
-  authStore.setAccessToken = setAccessToken;
-  authStore.logout = () => {
-    setuser(null);
-    setAccessToken(null);
-    setIsAuthenticated(false);
-    navigate("/login");
-  };
-
   useEffect(() => {
-    setupInterceptors();
-  }, []);
+    const handleLogout = () => {
+      setuser(null);
+      setIsAuthenticated(false);
+      navigate("/login");
+    };
 
-  useEffect(() => {
-    authStore.setAccessToken(accessToken);
-  }, [accessToken]);
+    setupInterceptors(handleLogout);
 
-  useEffect(() => {
     const checkUserStatus = async () => {
       try {
         const response = await apiservice.post("/api/auth/refresh");
-        const newAccessToken = response.data.accessToken;
-        setAccessToken(newAccessToken);
+        const { accessToken: newAccessToken, userData } = response.data;
+        authStore.setAccessToken(newAccessToken);
+        setuser(userData);
         setIsAuthenticated(true);
-        const userResponse = await apiservice.get("/api/auth/getuser", {
-          headers: { Authorization: `Bearer ${newAccessToken}` },
-        });
-        setuser(userResponse.data);
       } catch (error) {
         console.log("No active session or refresh token expired.");
         setuser(null);
-        setAccessToken(null);
         setIsAuthenticated(false);
+        authStore.setAccessToken(null);
       } finally {
         setloading(false);
       }
@@ -60,10 +48,9 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.data) {
-        const { userData, accesstoken: newAccessToken } = response.data;
+        const { userData, accessToken: newAccessToken } = response.data;
 
-        setAccessToken(newAccessToken);
-
+        authStore.setAccessToken(newAccessToken);
         setuser(userData);
         setIsAuthenticated(true);
 
@@ -78,50 +65,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password, username) => {
-    try {
-      const trimmedEmail = email.trim();
-      const trimmedPassword = password.trim();
-      const trimmedUsername = username.trim();
-
-      const response = await apiservice.post("/api/auth/register", {
-        Email: trimmedEmail,
-        Password: trimmedPassword,
-        Username: trimmedUsername,
-      });
-      await login(trimmedEmail, trimmedPassword);
-    } catch (error) {
-      console.error("Register failed:", error.response?.data);
-      throw error;
-    }
-  };
-
   const logout = async () => {
     try {
-      const response = await apiservice.post("/api/auth/logout");
+      await apiservice.post("/api/auth/logout");
     } catch (error) {
       console.error(
         "logout failed:",
         error.response?.data?.message || error.message
       );
-      throw error;
     } finally {
       setuser(null);
-      setAccessToken(null);
       setIsAuthenticated(false);
+      authStore.setAccessToken(null);
       navigate("/login");
     }
   };
 
-  const value = {
-    login,
-    logout,
-    register,
-    isloading,
-    user,
-    accessToken,
-    isAuthenticated,
-  };
+  const value = { login, logout, isloading, user, isAuthenticated };
 
   return (
     <AuthContext.Provider value={value}>

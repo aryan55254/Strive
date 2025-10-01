@@ -8,20 +8,12 @@ const apiservice = axios.create({
   withCredentials: true,
 });
 
-const refreshAPI = axios.create({
-  baseURL: API,
-  withCredentials: true,
-});
-
-export const setupInterceptors = () => {
+export const setupInterceptors = (logoutHandler) => {
   apiservice.interceptors.request.use(
     (config) => {
-      const token = authStore.getToken?.() || authStore.accessToken;
+      const token = authStore.getAccessToken();
       if (token) {
-        config.headers = {
-          ...config.headers,
-          Authorization: `Bearer ${token}`,
-        };
+        config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },
@@ -33,24 +25,16 @@ export const setupInterceptors = () => {
     async (error) => {
       const originalRequest = error.config;
 
-      if (
-        (error.response?.status === 401 || error.response?.status === 403) &&
-        !originalRequest._retry
-      ) {
+      if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
         try {
-          const { data } = await refreshAPI.post("/api/auth/refresh");
+          const { data } = await apiservice.post("/api/auth/refresh");
           authStore.setAccessToken(data.accessToken);
-
-          originalRequest.headers = {
-            ...originalRequest.headers,
-            Authorization: `Bearer ${data.accessToken}`,
-          };
-
+          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
           return apiservice(originalRequest);
         } catch (refreshError) {
-          authStore.logout();
+          logoutHandler();
           return Promise.reject(refreshError);
         }
       }
