@@ -19,19 +19,21 @@ export const AuthProvider = ({ children }) => {
     };
 
     setupInterceptors(handleLogout);
-
     const checkUserStatus = async () => {
       try {
         const response = await apiservice.post("/api/auth/refresh");
-        const { accessToken: newAccessToken, userData } = response.data;
-        authStore.setAccessToken(newAccessToken);
-        setuser(userData);
+        const newAccessToken = response.data.accessToken;
+        apiservice.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${newAccessToken}`;
+        const userResponse = await apiservice.get("/api/auth/getuser");
+        setuser(userResponse.data);
         setIsAuthenticated(true);
       } catch (error) {
         console.log("No active session or refresh token expired.");
         setuser(null);
         setIsAuthenticated(false);
-        authStore.setAccessToken(null);
+        delete apiservice.defaults.headers.common["Authorization"];
       } finally {
         setloading(false);
       }
