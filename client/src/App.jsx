@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -7,54 +8,80 @@ import SavedDiets from "./pages/SavedDiets";
 import SavedWorkouts from "./pages/SavedWorkouts";
 import GenerateDiet from "./pages/GenenerateDiet";
 import GenerateWorkout from "./pages/GenerateWorkout";
-import ProtectedRoutes from "./components/ProtectedRoute";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Landing />}></Route>
+      <Route
+        path="/"
+        element={
+          <PublicRoute>
+            <Landing />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
+
+      {/* --- Protected Routes --- */}
+      {/* These remain unchanged */}
       <Route
         path="/home"
         element={
-          <ProtectedRoutes>
+          <ProtectedRoute>
             <Home />
-          </ProtectedRoutes>
+          </ProtectedRoute>
         }
-      ></Route>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
+      />
       <Route
         path="/saveddiets"
         element={
-          <ProtectedRoutes>
+          <ProtectedRoute>
             <SavedDiets />
-          </ProtectedRoutes>
+          </ProtectedRoute>
         }
-      ></Route>
+      />
       <Route
         path="/savedworkouts"
         element={
-          <ProtectedRoutes>
+          <ProtectedRoute>
             <SavedWorkouts />
-          </ProtectedRoutes>
+          </ProtectedRoute>
         }
-      ></Route>
+      />
       <Route
         path="/generatediet"
         element={
-          <ProtectedRoutes>
+          <ProtectedRoute>
             <GenerateDiet />
-          </ProtectedRoutes>
+          </ProtectedRoute>
         }
-      ></Route>
+      />
       <Route
         path="/generateworkout"
         element={
-          <ProtectedRoutes>
+          <ProtectedRoute>
             <GenerateWorkout />
-          </ProtectedRoutes>
+          </ProtectedRoute>
         }
-      ></Route>
+      />
     </Routes>
   );
 }
