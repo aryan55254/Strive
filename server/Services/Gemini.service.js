@@ -4,7 +4,7 @@ async function generateDietPlanFromAI(formData) {
   let responseText;
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash-latest",
+      model: "gemini-2.0-flash-001",
       generationConfig: {
         responseMimeType: "application/json",
       },
@@ -61,7 +61,7 @@ async function generateWorkoutPlanFromAI(formData) {
   let responseText;
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash-latest",
+      model: "gemini-2.0-flash-001",
       generationConfig: {
         responseMimeType: "application/json",
       },
