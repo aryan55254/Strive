@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
         Username: username,
         Password: password,
       });
-      navigate("/login");
+      login(email, password);
     } catch (error) {
       console.error(
         "Registration failed:",
