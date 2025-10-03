@@ -9,7 +9,7 @@ import {
   Bars3Icon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -31,29 +31,10 @@ function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const profileRef = useRef(null);
-  const mobileMenuRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
-        setIsProfileOpen(false);
-      }
-      if (
-        mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target)
-      ) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
+  // This effect closes the mobile menu when the user navigates to a new page
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
-  //we use this to close an opened menu while going to diff page it will automatically close itself
 
   return (
     <header className="sticky top-0 z-40 bg-[#0D1117] backdrop-blur-lg border-b border-gray-900">
@@ -81,7 +62,7 @@ function Header() {
           ))}
         </nav>
         <div className="flex items-center">
-          <div className="hidden md:block" ref={profileRef}>
+          <div className="hidden md:block">
             <button
               onClick={() => setIsProfileOpen((prev) => !prev)}
               className="rounded-full p-2 cursor-pointer text-gray-400 transition hover:bg-gray-800 hover:text-cyan-400"
@@ -114,7 +95,7 @@ function Header() {
             )}
           </div>
 
-          <div className="flex md:hidden" ref={mobileMenuRef}>
+          <div className="flex md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
               className="rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-cyan-400 cursor-pointer"
