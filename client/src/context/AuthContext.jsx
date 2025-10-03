@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, username, password) => {
+  const register = async (email, password, username) => {
     try {
       await apiservice.post("/api/auth/register", {
         Email: email,
