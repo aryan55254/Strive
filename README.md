@@ -17,7 +17,9 @@ Strive is an AI-powered fitness platform that generates personalized workout and
 - Progress tracking and plan management
 - Secure user authentication
 - Responsive design for all devices
-
+- Persistance based rate limit
+- Rate limited to 5 diet plans and 5 excercies plans per day
+  
 ## Tech Stack
 
 ### Frontend
