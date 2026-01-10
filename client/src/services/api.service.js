@@ -8,6 +8,20 @@ const apiservice = axios.create({
   withCredentials: true,
 });
 
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 export const setupInterceptors = (logoutHandler) => {
   apiservice.interceptors.request.use(
     (config) => {
@@ -33,19 +47,40 @@ export const setupInterceptors = (logoutHandler) => {
         !originalRequest._retry &&
         !isAuthRoute
       ) {
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          })
+            .then((token) => {
+              originalRequest.headers.Authorization = `Bearer ${token}`;
+              return apiservice(originalRequest);
+            })
+            .catch((err) => {
+              return Promise.reject(err);
+            });
+        }
+
         originalRequest._retry = true;
+        isRefreshing = true;
 
         try {
           const { data } = await apiservice.post("/api/auth/refresh");
-          authStore.setAccessToken(data.accessToken);
+          const { accessToken } = data;
+
+          authStore.setAccessToken(accessToken);
           apiservice.defaults.headers.common[
             "Authorization"
-          ] = `Bearer ${data.accessToken}`;
-          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+          ] = `Bearer ${accessToken}`;
+
+          processQueue(null, accessToken);
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return apiservice(originalRequest);
         } catch (refreshError) {
+          processQueue(refreshError, null);
           logoutHandler();
           return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
         }
       }
 
