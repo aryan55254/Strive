@@ -480,19 +480,26 @@ function GenerateWorkout() {
       const response = await apiservice.post("/api/generate/workout", payload);
       setGeneratedPlan(response.data);
     } catch (err) {
+      const errorMessage =
+        err.response?.data?.message ||
+        "An unexpected error occurred while generating your workout. Please try again.";
+
       if (err.response && err.response.status === 429) {
         setError({
           message:
-            "You have reached your daily generation limit. Please try again after 24 hours.",
+            "You have reached your daily generation limit. Please try again later. (" +
+            errorMessage +
+            ")",
           type: "limit",
         });
       } else {
         setError({
-          message:
-            "An unexpected error occurred while generating your diet. Please try again.",
+          message: errorMessage,
           type: "general",
         });
       }
+      console.error("Generation error:", err);
+    }
       console.error("Generation error:", err);
     } finally {
       setIsLoading(false);

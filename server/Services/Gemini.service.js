@@ -120,7 +120,15 @@ async function generateWorkoutPlanFromAI(formData) {
     );
 
     if (error.message && (error.message.includes("401") || error.message.includes("403") || error.message.includes("API key"))) {
-      throw new Error("Invalid or expired Gemini API Key. Please check your Render environment variables.");
+      const authError = new Error("Invalid or expired Gemini API Key. Please check your Render environment variables.");
+      authError.statusCode = 401;
+      throw authError;
+    }
+
+    if (error.message && error.message.includes("429")) {
+      const rateLimitError = new Error("Gemini API Quota Exceeded. Please try again later.");
+      rateLimitError.statusCode = 429;
+      throw rateLimitError;
     }
 
     if (responseText === undefined) {
