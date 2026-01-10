@@ -1,5 +1,15 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+function cleanJsonString(text) {
+  // Remove markdown code blocks (```json ... ``` or just ``` ... ```)
+  const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/i;
+  const match = text.match(codeBlockRegex);
+  if (match) {
+    return match[1].trim();
+  }
+  return text.trim();
+}
+
 async function generateDietPlanFromAI(formData) {
   let responseText;
   try {
@@ -38,8 +48,10 @@ async function generateDietPlanFromAI(formData) {
     `;
     const result = await model.generateContent(prompt);
     responseText = result.response.text();
-
-    return JSON.parse(responseText);
+    
+    // Clean and parse
+    const cleanJson = cleanJsonString(responseText);
+    return JSON.parse(cleanJson);
   } catch (error) {
     console.error(
       "Failed to process AI response. Raw text:",
@@ -96,7 +108,9 @@ async function generateWorkoutPlanFromAI(formData) {
     const result = await model.generateContent(prompt);
     responseText = result.response.text();
 
-    return JSON.parse(responseText);
+    // Clean and parse
+    const cleanJson = cleanJsonString(responseText);
+    return JSON.parse(cleanJson);
   } catch (error) {
     console.error(
       "Failed to process AI response. Raw text:",
