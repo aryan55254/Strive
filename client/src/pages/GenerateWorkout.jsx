@@ -499,8 +499,6 @@ function GenerateWorkout() {
         });
       }
       console.error("Generation error:", err);
-    }
-      console.error("Generation error:", err);
     } finally {
       setIsLoading(false);
       window.scrollTo({ top: 0, behavior: "smooth" });
