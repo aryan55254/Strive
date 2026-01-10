@@ -60,7 +60,7 @@ async function generateDietPlanFromAI(formData) {
       error
     );
     if (responseText === undefined) {
-      throw new Error("Failed to get a response from the AI service.");
+      throw new Error("Failed to get a response from the AI service. Reason: " + error.message);
     } else {
       throw new Error(
         "The AI returned invalid JSON. Check the server logs for the raw text."
@@ -118,8 +118,13 @@ async function generateWorkoutPlanFromAI(formData) {
       "Error:",
       error
     );
+
+    if (error.message && (error.message.includes("401") || error.message.includes("403") || error.message.includes("API key"))) {
+      throw new Error("Invalid or expired Gemini API Key. Please check your Render environment variables.");
+    }
+
     if (responseText === undefined) {
-      throw new Error("Failed to get a response from the AI service.");
+      throw new Error("Failed to get a response from the AI service. Reason: " + error.message);
     } else {
       throw new Error(
         "The AI returned invalid JSON. Check the server logs for the raw text."
