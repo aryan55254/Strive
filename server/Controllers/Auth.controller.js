@@ -78,12 +78,16 @@ const refresh = async (req, res, next) => {
       if (err) {
         return res.status(403).json({ message: "Invalid Token" });
       }
-      const user = await User.findById(decoded.userid);
+      const user = await User.findById(decoded.userid).select(
+        "-Password -lastGenerationDate"
+      );
       if (!user) {
         return res.status(403).json({ message: "Forbidden: User not found" });
       }
       const newAccessToken = generateaccesstoken(user._id);
-      return res.status(200).json({ accessToken: newAccessToken });
+      return res
+        .status(200)
+        .json({ accessToken: newAccessToken, userData: user });
     });
   } catch (err) {
     next(err);

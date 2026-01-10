@@ -22,12 +22,11 @@ export const AuthProvider = ({ children }) => {
     const checkUserStatus = async () => {
       try {
         const response = await apiservice.post("/api/auth/refresh");
-        const newAccessToken = response.data.accessToken;
+        const { accessToken: newAccessToken, userData } = response.data;
         apiservice.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${newAccessToken}`;
-        const userResponse = await apiservice.get("/api/auth/getuser");
-        setuser(userResponse.data);
+        setuser(userData);
         setIsAuthenticated(true);
       } catch (error) {
         console.log("No active session or refresh token expired.");
@@ -104,7 +103,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {!isloading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

@@ -12,7 +12,7 @@ const exerciserouter = require("./Routes/Excercise.route.js");
 const app = express();
 
 const corsOptions = {
-  origin: "https://strive.aryanmishra.site",
+  origin: "https://strive.aryan-mishra.site",
   credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   optionsSuccessStatus: 204,
