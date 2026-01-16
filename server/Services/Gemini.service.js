@@ -1,7 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 function cleanJsonString(text) {
-  // Remove markdown code blocks (```json ... ``` or just ``` ... ```)
   const codeBlockRegex = /```(?:json)?\s*([\s\S]*?)\s*```/i;
   const match = text.match(codeBlockRegex);
   if (match) {
@@ -13,12 +12,12 @@ function cleanJsonString(text) {
 async function generateDietPlanFromAI(formData) {
   let responseText;
   try {
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-001",
-      generationConfig: {
-        responseMimeType: "application/json",
-      },
-    });
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash", // <--- USE THIS
+  generationConfig: {
+    responseMimeType: "application/json",
+  },
+});
     const prompt = `
       You are a world-class nutritionist and fitness coach. Your task is to create a personalized diet plan based on the user's specific data.
 
