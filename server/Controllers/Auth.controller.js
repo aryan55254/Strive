@@ -74,22 +74,33 @@ const refresh = async (req, res, next) => {
     if (!token) {
       return res.status(404).json({ message: "Refresh Token Not Found" });
     }
-    jwt.verify(token, SECRET_KEY, async (err, decoded) => {
-      if (err) {
-        return res.status(403).json({ message: "Invalid Token" });
-      }
-      const user = await User.findById(decoded.userid).select(
-        "-Password -lastGenerationDate"
-      );
-      if (!user) {
-        return res.status(403).json({ message: "Forbidden: User not found" });
-      }
-      const newAccessToken = generateaccesstoken(user._id);
-      return res
-        .status(200)
-        .json({ accessToken: newAccessToken, userData: user });
+
+    console.time("Refresh:TokenVerify");
+    const decoded = await new Promise((resolve, reject) => {
+      jwt.verify(token, SECRET_KEY, (err, decoded) => {
+        if (err) reject(err);
+        else resolve(decoded);
+      });
     });
+    console.timeEnd("Refresh:TokenVerify");
+
+    console.time("Refresh:DbQuery");
+    const user = await User.findById(decoded.userid).select(
+      "-Password -lastGenerationDate"
+    );
+    console.timeEnd("Refresh:DbQuery");
+
+    if (!user) {
+      return res.status(403).json({ message: "Forbidden: User not found" });
+    }
+    const newAccessToken = generateaccesstoken(user._id);
+    return res
+      .status(200)
+      .json({ accessToken: newAccessToken, userData: user });
   } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+         return res.status(403).json({ message: "Invalid Token" });
+    }
     next(err);
   }
 };
